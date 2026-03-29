@@ -47,7 +47,7 @@ async function loadTabConfig() {
         }
 
         // Update page title and header
-        document.getElementById('page-title').textContent = `${tabConfig.label} - Your Name`;
+        document.getElementById('page-title').textContent = `${tabConfig.label} - Maria Peralta`;
         document.getElementById('page-header-text').textContent = tabConfig.headerText || '';
     } catch (error) {
         console.error('Error loading tab config:', error);
