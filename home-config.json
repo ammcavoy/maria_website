@@ -1,17 +1,20 @@
 {
-  "allProfilePhotos": [],
+  "allProfilePhotos": [
+    "photos/profile-1774794833023-0.jpg",
+    "photos/profile-1774794833570-1.jpg"
+  ],
   "selectedProfilePhotos": [],
-  "tagline": "Your Tagline Here - Test Update",
+  "tagline": "Howdy!",
   "about": "Write your about section here. Tell visitors about yourself, your interests, and what this website is about.",
   "professionalBackground": {
-    "current": "Your current position",
-    "education": "Your education",
+    "current": "Senior Project Engineer",
+    "education": "B.S. Mechanical Engineering from The University of Denver",
     "specialties": "Your specialties",
-    "technologies": "Your technologies"
+    "technologies": "Revizto, P6"
   },
   "contact": {
-    "email": "your@email.com",
-    "phone": "(xxx) xxx-xxxx",
-    "location": "Your City, State"
+    "email": "mahanda12@hotmail.com",
+    "phone": "(210)797-6650",
+    "location": "Denver, Colorado"
   }
 }
