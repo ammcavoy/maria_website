@@ -1,0 +1,46 @@
+{
+  "tabs": [
+    {
+      "id": "adventures",
+      "label": "Adventures",
+      "dataFile": "adventures/adventures.json",
+      "enabled": true,
+      "headerText": "Explore outdoor adventures. From challenging summit hikes to peaceful backcountry camping, each adventure tells a story of exploration and adventure in the outdoors.",
+      "subtypes": [
+        {
+          "id": "day-hikes",
+          "label": "Day Hikes",
+          "icon": ""
+        },
+        {
+          "id": "camping",
+          "label": "Camping",
+          "icon": ""
+        },
+        {
+          "id": "backcountry-lines",
+          "label": "Backcountry Lines",
+          "icon": ""
+        },
+        {
+          "id": "hut-trips",
+          "label": "Hut Trips",
+          "icon": ""
+        },
+        {
+          "id": "14ers",
+          "label": "14ers",
+          "icon": ""
+        }
+      ]
+    },
+    {
+      "id": "projects",
+      "label": "Projects",
+      "dataFile": "projects/projects.json",
+      "enabled": false,
+      "headerText": "",
+      "subtypes": []
+    }
+  ]
+}

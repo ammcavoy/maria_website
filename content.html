@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">Loading...</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Leaflet CSS for maps -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">Your Name</div>
+            <ul class="nav-menu">
+                <!-- Navigation loaded dynamically -->
+            </ul>
+        </div>
+    </nav>
+
+    <section class="adventures">
+        <div class="container">
+            <p class="section-intro" id="page-header-text">
+                <!-- Header text loaded from tabs-config.json -->
+            </p>
+            <div id="content-grid" class="adventures-grid">
+                <div class="loading-message">Loading...</div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 <a href="admin.html" style="color: inherit; text-decoration: none; cursor: default;">Your Name</a>. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Leaflet JS for maps -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <!-- Leaflet GPX Plugin -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-gpx/1.7.0/gpx.min.js"></script>
+    <!-- Navigation Script -->
+    <script src="navigation.js"></script>
+    <!-- Generic Content Loader -->
+    <script src="content-loader.js"></script>
+</body>
+</html>

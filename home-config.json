@@ -1,0 +1,17 @@
+{
+  "allProfilePhotos": [],
+  "selectedProfilePhotos": [],
+  "tagline": "Your Tagline Here",
+  "about": "Write your about section here. Tell visitors about yourself, your interests, and what this website is about.",
+  "professionalBackground": {
+    "current": "Your current position",
+    "education": "Your education",
+    "specialties": "Your specialties",
+    "technologies": "Your technologies"
+  },
+  "contact": {
+    "email": "your@email.com",
+    "phone": "(xxx) xxx-xxxx",
+    "location": "Your City, State"
+  }
+}

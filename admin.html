@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Add Adventure</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .admin-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: var(--white);
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .admin-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .admin-header h1 {
+            color: var(--primary-color);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--primary-color);
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: 1rem;
+        }
+
+        .form-group textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .form-group input[type="file"] {
+            padding: 0.5rem;
+        }
+
+        .file-preview {
+            margin-top: 1rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .file-preview-item {
+            position: relative;
+            width: 100px;
+            height: 100px;
+        }
+
+        .file-preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        .file-preview-item .remove-btn {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: red;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            font-size: 14px;
+            line-height: 1;
+        }
+
+        .edit-mode-selector {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            justify-content: center;
+        }
+
+        .mode-btn {
+            padding: 0.75rem 2rem;
+            border: 2px solid var(--primary-color);
+            background-color: white;
+            color: var(--primary-color);
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .mode-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .mode-btn:hover {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+            color: white;
+        }
+
+        .photo-grid {
+            margin-top: 1rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+
+        .photo-item {
+            position: relative;
+            aspect-ratio: 1;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: border-color 0.3s ease;
+        }
+
+        .photo-item.cover {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px var(--primary-color);
+        }
+
+        .photo-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .photo-item .remove-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background-color: rgba(255, 0, 0, 0.9);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            cursor: pointer;
+            font-size: 16px;
+            line-height: 1;
+            z-index: 10;
+        }
+
+        .photo-item .cover-badge {
+            position: absolute;
+            bottom: 5px;
+            left: 5px;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        .cover-photo-grid {
+            margin-top: 1rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+
+        .gpx-file-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem;
+            background-color: var(--light-color);
+            border-radius: 4px;
+            margin-bottom: 0.5rem;
+        }
+
+        .gpx-file-name {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .gpx-file-icon {
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        .gpx-remove-btn {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+
+        .gpx-remove-btn:hover {
+            background-color: #c82333;
+        }
+
+        .submit-btn {
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 4px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .submit-btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .output-section {
+            margin-top: 2rem;
+            padding: 1rem;
+            background-color: var(--light-color);
+            border-radius: 4px;
+            display: none;
+        }
+
+        .output-section.active {
+            display: block;
+        }
+
+        .output-section h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .output-section pre {
+            background-color: var(--white);
+            padding: 1rem;
+            border-radius: 4px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+        }
+
+        .instructions {
+            background-color: #fff3cd;
+            padding: 1.5rem;
+            border-radius: 4px;
+            border-left: 4px solid #ffc107;
+            margin-bottom: 2rem;
+        }
+
+        .instructions h3 {
+            margin-top: 0;
+            color: #856404;
+        }
+
+        .instructions ol {
+            margin-left: 1.5rem;
+        }
+
+        .instructions li {
+            margin-bottom: 0.5rem;
+        }
+
+        .instructions code {
+            background-color: #f5f5f5;
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-size: 0.9rem;
+        }
+
+        .github-setup {
+            background-color: #d1ecf1;
+            padding: 1.5rem;
+            border-radius: 4px;
+            border-left: 4px solid #0c5460;
+            margin-bottom: 2rem;
+        }
+
+        .github-setup h3 {
+            margin-top: 0;
+            color: #0c5460;
+        }
+
+        .github-setup a {
+            color: #0c5460;
+            font-weight: bold;
+        }
+
+        .token-input-group {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .token-input-group input {
+            flex: 1;
+        }
+
+        .token-input-group button {
+            background-color: #0c5460;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .token-input-group button:hover {
+            background-color: #0a4049;
+        }
+
+        .token-status {
+            margin-top: 0.5rem;
+            padding: 0.5rem;
+            border-radius: 4px;
+            display: none;
+        }
+
+        .token-status.success {
+            background-color: #d4edda;
+            color: #155724;
+            display: block;
+        }
+
+        .token-status.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            display: block;
+        }
+
+        .progress-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .progress-overlay.active {
+            display: flex;
+        }
+
+        .progress-content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            max-width: 500px;
+            width: 90%;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background-color: #f0f0f0;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background-color: var(--primary-color);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .progress-message {
+            margin-top: 1rem;
+            text-align: center;
+            color: #666;
+        }
+
+        /* Admin Tabs */
+        .admin-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #ddd;
+        }
+
+        .admin-tab-btn {
+            background: none;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1rem;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+            color: #666;
+        }
+
+        .admin-tab-btn:hover {
+            color: var(--primary-color);
+        }
+
+        .admin-tab-btn.active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .admin-section {
+            display: none;
+        }
+
+        /* Tab Management */
+        .tabs-manager {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .current-tabs {
+            background-color: var(--light-color);
+            padding: 1.5rem;
+            border-radius: 8px;
+        }
+
+        .tab-item {
+            background-color: white;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 4px;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .tab-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .tab-item-title {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .tab-item-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .tab-item-actions button {
+            padding: 0.25rem 0.75rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+
+        .edit-tab-btn {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        .delete-tab-btn {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .tab-subtypes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .subtype-badge {
+            background-color: var(--light-color);
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            color: var(--text-color);
+        }
+
+        .tab-editor {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+
+        .subtype-field {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+            align-items: flex-start;
+        }
+
+        .subtype-field input {
+            flex: 1;
+        }
+
+        .subtype-field .subtype-icon {
+            width: 60px;
+        }
+
+        .remove-subtype-btn {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .add-subtype-btn {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            margin: 1rem 0;
+        }
+
+        .cancel-btn {
+            background-color: #6c757d;
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        @media (max-width: 968px) {
+            .tabs-manager {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Photo Drop Zone */
+        .photo-drop-zone {
+            border: 2px dashed #ccc;
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            background-color: #f9f9f9;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .photo-drop-zone:hover,
+        .photo-drop-zone.drag-over {
+            border-color: var(--primary-color);
+            background-color: #f0f8f5;
+        }
+
+        .photo-drop-zone p {
+            margin: 0;
+            color: #666;
+        }
+
+        .browse-btn {
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            text-decoration: underline;
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 0;
+        }
+
+        .browse-btn:hover {
+            color: var(--secondary-color);
+        }
+
+        /* Category Checkboxes */
+        .category-checkboxes {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 0.75rem;
+            padding: 1rem;
+            background-color: var(--light-color);
+            border-radius: 4px;
+        }
+
+        .category-checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .category-checkbox-item input[type="checkbox"] {
+            width: auto;
+            cursor: pointer;
+        }
+
+        .category-checkbox-item label {
+            margin: 0;
+            cursor: pointer;
+            font-weight: normal;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <div class="admin-header">
+            <h1>Website Admin</h1>
+            <p>Manage your website content and structure</p>
+        </div>
+
+        <div class="github-setup">
+            <h3>GitHub Setup</h3>
+            <p>To upload adventures, you need a GitHub Personal Access Token with 'repo' permissions.</p>
+            <p><a href="https://github.com/settings/tokens/new?scopes=repo&description=Website%20Admin" target="_blank">Click here to create a token</a> (select 'repo' scope)</p>
+            <div class="token-input-group">
+                <input type="password" id="github-token" placeholder="Paste your GitHub token here">
+                <button type="button" onclick="saveToken()">Save Token</button>
+            </div>
+            <div id="token-status" class="token-status"></div>
+        </div>
+
+        <div class="admin-tabs" id="admin-tab-buttons">
+            <button class="admin-tab-btn" onclick="switchAdminTab('home')">Edit Home Page</button>
+            <button class="admin-tab-btn" onclick="switchAdminTab('tabs')">Manage Tabs</button>
+            <!-- Dynamic tab admin buttons will be inserted here by admin-dynamic.js -->
+        </div>
+
+        <!-- Old hardcoded adventure admin section removed - now dynamically generated by admin-dynamic.js -->
+
+        <!-- Tab Management Section -->
+        <div id="admin-tabs-section" class="admin-section" style="display: none;">
+            <h2>Tab Management</h2>
+            <p>Create and manage tabs and their subtypes (categories).</p>
+
+            <div class="tabs-manager">
+                <div class="current-tabs">
+                    <h3>Current Tabs</h3>
+                    <div id="tabs-list"></div>
+                </div>
+
+                <div class="tab-editor">
+                    <h3 id="tab-editor-title">Create New Tab</h3>
+                    <form id="tab-form">
+                        <input type="hidden" id="editing-tab-id">
+
+                        <div class="form-group">
+                            <label for="tab-id">Tab ID *</label>
+                            <input type="text" id="tab-id" placeholder="e.g., projects, blog" required>
+                            <small>Lowercase letters and hyphens only (used in URL)</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="tab-label">Tab Label *</label>
+                            <input type="text" id="tab-label" placeholder="e.g., Projects, Blog" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="tab-header-text">Header Text <small>(optional)</small></label>
+                            <textarea id="tab-header-text" placeholder="Introductory text that appears at the top of the tab page" rows="3"></textarea>
+                            <small>This text will appear below the navigation on the tab's page</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="tab-enabled">
+                                <input type="checkbox" id="tab-enabled" checked>
+                                Enable this tab
+                            </label>
+                        </div>
+
+                        <h4>Subtypes (Categories)</h4>
+                        <div id="subtypes-container"></div>
+
+                        <button type="button" class="add-subtype-btn" onclick="addSubtypeField()">+ Add Subtype</button>
+
+                        <div style="margin-top: 2rem; display: flex; gap: 1rem;">
+                            <button type="submit" class="submit-btn" style="flex: 1;">Save Tab</button>
+                            <button type="button" class="cancel-btn" onclick="cancelTabEdit()" style="flex: 1; background-color: #6c757d;">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Home Page Editing Section -->
+        <div id="admin-home-section" class="admin-section" style="display: none;">
+            <h2>Edit Home Page</h2>
+            <p>Update the text content on your home page.</p>
+
+            <form id="home-form">
+                <h3>Profile Photos</h3>
+                <div class="form-group">
+                    <label for="home-photo-files">Upload New Profile Photos</label>
+                    <div id="home-photo-drop-zone" class="photo-drop-zone">
+                        <input type="file" id="home-photo-files" accept="image/*" multiple style="display: none;">
+                        <p>Drag photos here or <button type="button" class="browse-btn" onclick="document.getElementById('home-photo-files').click()">Browse Files</button></p>
+                    </div>
+                    <small>Upload additional photos to your collection</small>
+                </div>
+
+                <div id="home-photos-section" style="margin-top: 1rem; margin-bottom: 1.5rem;">
+                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Profile Photo Collection</label>
+                    <p style="margin-bottom: 1rem; color: #666; font-size: 0.95rem;">
+                        Click a photo to select it (max 2). Click the red X to delete.
+                    </p>
+                    <div id="home-photo-grid" class="photo-grid"></div>
+                </div>
+
+                <h3>Text Content</h3>
+                <div class="form-group">
+                    <label for="home-tagline">Tagline *</label>
+                    <input type="text" id="home-tagline" placeholder="e.g., Software Engineer | Outdoor Adventurer | Explorer" required>
+                    <small>Appears below your name on the home page</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="home-about">About Section *</label>
+                    <textarea id="home-about" rows="6" required></textarea>
+                    <small>Main about text that appears on the home page</small>
+                </div>
+
+                <h3>Professional Background</h3>
+
+                <div class="form-group">
+                    <label for="home-current">Current Position *</label>
+                    <input type="text" id="home-current" placeholder="e.g., Software Engineer at Company (Location)" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="home-education">Education *</label>
+                    <input type="text" id="home-education" placeholder="e.g., Computer Engineering & Computer Science, University" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="home-specialties">Specialties *</label>
+                    <input type="text" id="home-specialties" placeholder="e.g., Java, Distributed Systems, API Integration" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="home-technologies">Technologies *</label>
+                    <input type="text" id="home-technologies" placeholder="e.g., Spring, React, PostgreSQL, AWS, Linux" required>
+                </div>
+
+                <h3>Contact Information</h3>
+
+                <div class="form-group">
+                    <label for="home-email">Email *</label>
+                    <input type="email" id="home-email" placeholder="e.g., your@email.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="home-phone">Phone *</label>
+                    <input type="tel" id="home-phone" placeholder="e.g., (123) 456-7890" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="home-location">Location *</label>
+                    <input type="text" id="home-location" placeholder="e.g., City, State" required>
+                </div>
+
+                <button type="submit" class="submit-btn">Save Home Page Changes</button>
+            </form>
+        </div>
+
+        <!-- Container for dynamically generated admin sections -->
+        <div id="admin-sections-container">
+            <!-- Dynamic admin sections will be inserted here by admin-dynamic.js -->
+        </div>
+    </div>
+
+    <div id="progress-overlay" class="progress-overlay">
+        <div class="progress-content">
+            <h3>Uploading Adventure...</h3>
+            <div class="progress-bar">
+                <div id="progress-bar-fill" class="progress-bar-fill"></div>
+            </div>
+            <div id="progress-message" class="progress-message">Preparing upload...</div>
+        </div>
+    </div>
+
+    <script src="admin.js"></script>
+    <script src="content-manager.js"></script>
+    <script src="admin-dynamic.js"></script>
+</body>
+</html>
