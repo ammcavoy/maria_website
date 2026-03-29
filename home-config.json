@@ -3,7 +3,10 @@
     "photos/profile-1774794833023-0.jpg",
     "photos/profile-1774794833570-1.jpg"
   ],
-  "selectedProfilePhotos": [],
+  "selectedProfilePhotos": [
+    "photos/profile-1774794833023-0.jpg",
+    "photos/profile-1774794833570-1.jpg"
+  ],
   "tagline": "Howdy!",
   "about": "Write your about section here. Tell visitors about yourself, your interests, and what this website is about.",
   "professionalBackground": {
