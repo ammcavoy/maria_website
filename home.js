@@ -7,10 +7,12 @@ async function loadHomeContent() {
         // Update profile photos (use selected photos)
         const photosToDisplay = config.selectedProfilePhotos || config.profilePhotos || [];
         if (photosToDisplay.length > 0) {
-            const profileImages = document.querySelectorAll('.profile-image img');
+            const profileImageContainers = document.querySelectorAll('.profile-image');
             photosToDisplay.forEach((photoPath, index) => {
-                if (profileImages[index]) {
-                    profileImages[index].src = photoPath;
+                if (profileImageContainers[index]) {
+                    const container = profileImageContainers[index];
+                    container.classList.remove('placeholder');
+                    container.innerHTML = `<img src="${photoPath}" alt="Profile Photo">`;
                 }
             });
         }
